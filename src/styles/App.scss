@@ -1,0 +1,111 @@
+html, body, .app {
+  width: 100%;
+  height: 100%;
+}
+
+.app {
+    text-align: center;
+}
+
+.logo {
+    cursor: pointer;
+}
+
+.app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(252, 90, 44, 0.89);
+    color: #fff;
+    padding: 5px;
+}
+
+.app-body {
+    background-size: cover;
+    background-image: url(../images/pattern.svg);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    height: 660px;
+}
+
+.app-intro-title {
+    font-size: 45px;
+    color: #fff;
+    font-weight: 100;
+}
+
+.search-weather {
+
+    &.placement-block {
+        input {
+            margin-bottom: 20px;
+        }
+    }
+
+    &.placement-inline {
+        input {
+            display: inline;
+            width: auto;
+            margin-right: 5px;
+        }
+
+        button {
+            display: inline;
+        }
+    }
+}
+
+.search-result {
+    .title {
+        font-size: 65px;
+        color: #333;
+        font-weight: 100;
+        text-align: center;
+        margin-top: 50px;
+        margin-bottom: 30px;
+    }
+
+    .instruction {
+        font-size: 30px;
+        color: #333;
+        font-weight: 100;
+    }
+}
+
+
+.day-forecast {
+    display: inline-block;
+    margin: 2em;
+
+    img {
+        height: 130px;
+        width: 12vw;
+        margin: 1vw;
+        cursor: pointer;
+    }
+
+    p {
+        font-size: 1.5em;
+    }
+}
+
+.weather-detail {
+    img {
+        width: 17%;
+        opacity: 0.8;
+    }
+
+    .header-info {
+        margin: 5vh auto 3vh auto;
+        font-size: 1.2em;
+    }
+
+    text-align: center;
+    font-size: 2.5em;
+    margin: 3vh auto;
+    font-weight: 100;
+}

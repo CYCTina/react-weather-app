@@ -9,6 +9,14 @@ html, body, .app {
 
 .logo {
     cursor: pointer;
+    text-decoration: none;
+    font-size: 2.5em;
+    color: white;
+
+    &:hover {
+        text-decoration: none;
+        color: white;
+    }
 }
 
 .app-header {
@@ -70,6 +78,7 @@ html, body, .app {
     }
 
     .instruction {
+        text-align: center;
         font-size: 30px;
         color: #333;
         font-weight: 100;
@@ -108,4 +117,8 @@ html, body, .app {
     font-size: 2.5em;
     margin: 3vh auto;
     font-weight: 100;
+}
+
+.center {
+    text-align: center;
 }

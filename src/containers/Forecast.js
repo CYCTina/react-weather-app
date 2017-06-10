@@ -1,74 +1,69 @@
-import React from 'react';
-import queryString from 'query-string';
-import DayItem from '../components/DayItem';
-import * as WeatherResource from '../server/resources/weathers';
-import * as StringUtil from '../utils/string';
+import React from 'react'
+import queryString from 'query-string'
+import { connect } from 'react-redux'
+import History from '../configs/history'
+import DayItemList from '../components/DayItemList'
+import { fetchWeathers } from '../actions/index'
+
+
+const mapStateToProps = (state, ownProps) => {
+	return {
+		city: queryString.parse(ownProps.location.search).city,
+		isFetching: state.weathers.isFetching,
+		weathers: state.weathers.data,
+		lastUpdated: state.weathers.lastUpdated
+	}
+}
+
+//use short hand notation instead when arguments match
+// const mapDispatchToProps = (dispatch, ownProps) => ({
+// 	getWeathers: function(city){
+// 		dispatch(fetchWeathers(city))
+// 	}
+// })
+
 
 class Forecast extends React.Component {
 	constructor(props){
-		super(props);
-		this.state = {
-			isLoading: true,
-        	forecastData: []
-		};
+		super(props)
 	}
 
-	componentWillReceiveProps(nextProps){
-		console.log("componentWillReceiveProps");		
-		this.city = queryString.parse(nextProps.location.search).city;
-		this.getWeather(this.city);
+	componentWillMount(nextProps) {		
+		
+		this.props.getWeathers(this.props.city)
 	}
 
-	componentDidMount(){
-		console.log("componentDidMount");		
-		this.city = queryString.parse(this.props.location.search).city;
-		this.getWeather(this.city);
+	componentWillReceiveProps(nextProps) {	
+		if(nextProps.city !== this.props.city){
+			this.props.getWeathers(this.props.city)
+		}
 	}
 
-	getWeather(city) {
-		WeatherResource.getByLocation(city).then(
-			function(response){
-				this.setState({
-					isLoading: false,
-					forecastData: response.data.list
-				});
-			}.bind(this)
-			,function(err){
-				//log err
-			});
-	}
-
-	handleClick = (weatherDetail) => {
-		weatherDetail.city = this.city;
-
-		this.props.history.push(
-			{
-				pathname: '/forecast/detail',
-				search: "?city=" + this.props.city,
-				state: { 
-					detail: weatherDetail
-				}
+	displayDayWeatherDetail(city, dayWeatherDetail) {
+		History.push({
+			pathname: "/forecast/detail",
+			search: "?city=" + city,
+			state: {
+				city: city,
+				detail: dayWeatherDetail
 			}
-		);
+		})	
 	}
 
 	render() {
 		return (
-			<div>
-				{this.state.isLoading ? (
-					<h2>Loading...</h2>
-				) : (
-					<div className="search-result">
-						<h1 className="title">{StringUtil.CapitalizeFirstLetter(this.city)}</h1>
-						<p className="instruction">Select a day</p>
-						<div>
-							{ this.state.forecastData.map( d => <DayItem info={d} key={d.dt} onClick={(e) => this.handleClick(d) } /> ) }
-						</div>
-					</div>
-				)}
-			</div>
+			<DayItemList city={this.props.city} 
+						weathers={this.props.weathers} 
+						isFetching={this.props.isFetching}
+						handleClick={this.displayDayWeatherDetail} />
 		)
 	}
 }
 
-export default Forecast;
+export default connect(
+	mapStateToProps,
+	{ getWeathers: fetchWeathers }
+)(Forecast)
+
+
+
